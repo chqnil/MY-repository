@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카피바라 월드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+    <div class="app-container">
+        <nav>
+            <button id="fact-btn" class="active">카피바라 상식</button>
+            <button id="game-btn">카피바라 게임</button>
+        </nav>
+
+        <div id="fact-container" class="container">
+            <h1>랜덤 카피바라 상식</h1>
+            <p id="fact">버튼을 눌러 카피바라에 대한 재미있는 사실을 알아보세요!</p>
+            <button id="get-fact-btn">새로운 상식 보기</button>
+        </div>
+
+        <div id="game-container" class="container" style="display: none;">
+            <h1>카피바라 점프!</h1>
+            <canvas id="game-canvas" width="480" height="320"></canvas>
+            <p>스페이스바를 눌러 점프하세요!</p>
+        </div>
+    </div>
+
+    <script src="main.js?v=2"></script>
+    <script src="game.js?v=2"></script>
+</body>
+</html>
