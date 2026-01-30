@@ -1,47 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Tab Navigation --- //
-    const factBtn = document.getElementById('fact-btn');
-    const gameBtn = document.getElementById('game-btn');
-    const factContainer = document.getElementById('fact-container');
-    const gameContainer = document.getElementById('game-container');
+    const tabs = document.querySelectorAll('.tab-link');
+    const contents = document.querySelectorAll('.tab-content');
 
-    factBtn.addEventListener('click', () => {
-        factBtn.classList.add('active');
-        gameBtn.classList.remove('active');
-        factContainer.style.display = 'block';
-        gameContainer.style.display = 'none';
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Deactivate all tabs and content
+            tabs.forEach(item => item.classList.remove('active'));
+            contents.forEach(item => item.classList.remove('active'));
+
+            // Activate the clicked tab and its content
+            const target = document.querySelector(`#${tab.dataset.tab}`);
+            tab.classList.add('active');
+            target.classList.add('active');
+
+            // **If the game tab is now active, dispatch an event**
+            if (tab.dataset.tab === 'game') {
+                window.dispatchEvent(new Event('showgametab'));
+            }
+        });
     });
 
-    gameBtn.addEventListener('click', () => {
-        gameBtn.classList.add('active');
-        factBtn.classList.remove('active');
-        gameContainer.style.display = 'block';
-        factContainer.style.display = 'none';
-    });
-
-    // --- Capybara Facts --- //
-    const factElement = document.getElementById('fact');
-    const getFactBtn = document.getElementById('get-fact-btn');
+    // Capybara Facts Logic
+    const factText = document.getElementById('fact-text');
+    const newFactBtn = document.getElementById('new-fact-btn');
 
     const capybaraFacts = [
-        "카피바라는 지구상에서 가장 큰 설치류입니다.",
-        "그들은 매우 사회적인 동물이며, 최대 100마리까지 무리를 지어 생활합니다.",
-        "카피바라는 뛰어난 수영 실력을 가지고 있으며, 물 속에서 5분 이상 숨을 참을 수 있습니다.",
-        "위험을 감지하면 개처럼 짖어서 무리에게 경고합니다.",
-        "그들의 식단은 주로 수생 식물과 풀으로 이루어져 있습니다.",
-        "카피바라는 다른 동물들과 아주 잘 지내는 것으로 유명하며, 종종 '자연의 의자'라고 불립니다.",
-        "그들은 하루에 최대 8kg의 풀을 먹을 수 있습니다.",
-        "카피바라는 남아메리카의 대부분 지역에서 발견됩니다.",
-        "앞니가 계속 자라기 때문에, 나무껍질 등을 씹어서 닳게 만들어야 합니다.",
-        "카피바라의 임신 기간은 약 5개월이며, 한 번에 1~8마리의 새끼를 낳습니다."
+        "카피바라는 세계에서 가장 큰 설치류입니다.",
+        "카피바라는 '초원의 지배자'라는 뜻의 투피족 언어에서 유래했습니다.",
+        "카피바라는 수영과 잠수를 매우 잘하며, 발에 작은 물갈퀴가 있습니다.",
+        "카피바라는 다른 동물들과 매우 사교적이며, '움직이는 의자' 역할을 하기도 합니다.",
+        "카피바라의 앞니는 평생 동안 계속 자랍니다.",
+        "카피바라는 채식주의자이며 주로 풀과 수생 식물을 먹습니다.",
+        "카피바라는 위협을 느끼면 물 속으로 뛰어들어 숨을 수 있습니다.",
+        "카피바라는 일본 온천에서 목욕하는 것을 즐기는 것으로 유명합니다.",
+        "카피바라는 하루에 15~20시간을 먹거나 쉬면서 보냅니다.",
+        "카피바라는 등을 토닥여주면 쉽게 잠에 빠져드는 온순한 성격을 가지고 있습니다."
     ];
 
-    function getRandomFact() {
-        const randomIndex = Math.floor(Math.random() * capybaraFacts.length);
-        return capybaraFacts[randomIndex];
-    }
-
-    getFactBtn.addEventListener('click', () => {
-        factElement.textContent = getRandomFact();
+    newFactBtn.addEventListener('click', () => {
+        let randomIndex = Math.floor(Math.random() * capybaraFacts.length);
+        let randomFact = capybaraFacts[randomIndex];
+        // Prevent showing the same fact twice in a row
+        if (factText.textContent === randomFact) {
+            randomIndex = (randomIndex + 1) % capybaraFacts.length;
+            randomFact = capybaraFacts[randomIndex];
+        }
+        factText.textContent = randomFact;
     });
 });
