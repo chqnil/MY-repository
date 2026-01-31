@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Stop sounds when switching tabs
+            // Stop sounds when switching tabs to prevent them from playing in the background
             stopAllSounds();
             document.querySelectorAll('.music-btn').forEach(btn => btn.classList.remove('active'));
 
@@ -23,38 +23,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-btn');
 
     let countdown;
-    let timeLeft = 1500; // 25 minutes in seconds
+    let timeLeft;
+    let pomodoroCount = 0;
+    let timerState = 'stopped'; // running, stopped, paused
+    let timerMode = 'pomodoro'; // pomodoro, shortBreak, longBreak
+
+    const timeSettings = { pomodoro: 1500, shortBreak: 300, longBreak: 900 };
 
     function updateTimerDisplay() {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        document.body.className = `${timerMode}-bg`; // Change background color based on mode
+    }
+
+    function switchMode(mode) {
+        timerMode = mode;
+        timeLeft = timeSettings[mode];
+        timerState = 'stopped';
+        document.body.className = `${timerMode}-bg`;
+        updateTimerDisplay();
+    }
+
+    function handleTimerEnd() {
+        clearInterval(countdown);
+        timerState = 'stopped';
+        startBtn.textContent = '시작';
+
+        if (timerMode === 'pomodoro') {
+            pomodoroCount++;
+            if (pomodoroCount % 4 === 0) {
+                alert('집중 시간이 끝났습니다! 긴 휴식을 시작하세요.');
+                switchMode('longBreak');
+            } else {
+                alert('집중 시간이 끝났습니다! 짧은 휴식을 시작하세요.');
+                switchMode('shortBreak');
+            }
+        } else { // shortBreak or longBreak
+            alert('휴식 시간이 끝났습니다! 다시 집중할 시간입니다.');
+            switchMode('pomodoro');
+        }
     }
 
     function startTimer() {
-        clearInterval(countdown);
+        if (timerState === 'running') return;
+        timerState = 'running';
         startBtn.textContent = '계속';
+
         countdown = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
             if (timeLeft < 0) {
-                clearInterval(countdown);
-                alert('집중 시간이 끝났습니다! 5분 휴식을 시작합니다.');
-                timeLeft = 300; // 5 minute break
-                updateTimerDisplay();
-                startTimer(); // Auto-start break
+                handleTimerEnd();
             }
         }, 1000);
     }
 
     function stopTimer() {
+        if (timerState !== 'running') return;
         clearInterval(countdown);
+        timerState = 'paused';
     }
 
     function resetTimer() {
         clearInterval(countdown);
-        timeLeft = 1500; // Reset to 25 minutes
-        updateTimerDisplay();
+        pomodoroCount = 0;
+        switchMode('pomodoro');
         startBtn.textContent = '시작';
     }
 
@@ -70,31 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function addTodoItem() {
         const todoText = todoInput.value.trim();
         if (todoText === '') return;
-
         const li = document.createElement('li');
         li.textContent = todoText;
-
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = '삭제';
         deleteBtn.classList.add('delete-btn');
-        deleteBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent li click event
-            li.remove();
-        });
-
-        li.addEventListener('click', () => {
-            li.classList.toggle('completed');
-        });
-
+        deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); li.remove(); });
+        li.addEventListener('click', () => { li.classList.toggle('completed'); });
         li.appendChild(deleteBtn);
         todoList.appendChild(li);
         todoInput.value = '';
     }
 
     addTodoBtn.addEventListener('click', addTodoItem);
-    todoInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addTodoItem();
-    });
+    todoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodoItem(); });
     
     // --- Background Music Logic ---
     const musicButtons = document.querySelectorAll('.music-btn');
@@ -102,10 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioRain = document.getElementById('audio-rain');
 
     function stopAllSounds() {
-        audioCafe.pause();
-        audioRain.pause();
-        audioCafe.currentTime = 0;
-        audioRain.currentTime = 0;
+        audioCafe.pause(); audioRain.pause();
+        audioCafe.currentTime = 0; audioRain.currentTime = 0;
     }
 
     musicButtons.forEach(button => {
@@ -113,15 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
             stopAllSounds();
             musicButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
             const sound = button.dataset.sound;
-            if (sound === 'cafe') {
-                audioCafe.play();
-            } else if (sound === 'rain') {
-                audioRain.play();
-            } else if (sound === 'none') {
-                button.classList.remove('active');
-            }
+            if (sound === 'cafe') { audioCafe.play(); }
+            else if (sound === 'rain') { audioRain.play(); }
+            else if (sound === 'none') { button.classList.remove('active'); }
         });
     });
 
@@ -146,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     newQuoteBtn.addEventListener('click', showNewQuote);
 
-    // Initialize
-    updateTimerDisplay();
+    // Initialize on page load
+    resetTimer(); // Initialize timer to default pomodoro state
     showNewQuote();
 });

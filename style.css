@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #f0f2f5; /* Light grey background */
+    background-color: #f0f2f5; /* Default light grey background */
     color: #333;
     margin: 0;
     padding: 20px;
@@ -10,7 +10,20 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    transition: background-color 0.5s ease;
 }
+
+/* Background color themes for Pomodoro states */
+body.pomodoro-bg {
+    background-color: #e6f7ff; /* Light blue for focus */
+}
+body.shortBreak-bg {
+    background-color: #e6ffed; /* Light green for short break */
+}
+body.longBreak-bg {
+    background-color: #fffbe6; /* Light yellow for long break */
+}
+
 
 .container {
     width: 100%;
@@ -20,6 +33,7 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     padding: 30px 40px;
     text-align: center;
+    z-index: 10;
 }
 
 h1 {
