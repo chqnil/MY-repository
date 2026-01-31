@@ -1,50 +1,117 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Tab-switching logic ---
     const tabs = document.querySelectorAll('.tab-link');
     const contents = document.querySelectorAll('.tab-content');
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Deactivate all tabs and content
             tabs.forEach(item => item.classList.remove('active'));
             contents.forEach(item => item.classList.remove('active'));
-
-            // Activate the clicked tab and its content
-            const target = document.querySelector(`#${tab.dataset.tab}`);
             tab.classList.add('active');
-            target.classList.add('active');
-
-            // **If the game tab is now active, dispatch an event**
-            if (tab.dataset.tab === 'game') {
-                window.dispatchEvent(new Event('showgametab'));
-            }
+            document.getElementById(tab.dataset.tab).classList.add('active');
         });
     });
 
-    // Capybara Facts Logic
-    const factText = document.getElementById('fact-text');
-    const newFactBtn = document.getElementById('new-fact-btn');
+    // --- Pomodoro Timer Logic ---
+    const timerDisplay = document.getElementById('timer-display');
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const resetBtn = document.getElementById('reset-btn');
 
-    const capybaraFacts = [
-        "카피바라는 세계에서 가장 큰 설치류입니다.",
-        "카피바라는 '초원의 지배자'라는 뜻의 투피족 언어에서 유래했습니다.",
-        "카피바라는 수영과 잠수를 매우 잘하며, 발에 작은 물갈퀴가 있습니다.",
-        "카피바라는 다른 동물들과 매우 사교적이며, '움직이는 의자' 역할을 하기도 합니다.",
-        "카피바라의 앞니는 평생 동안 계속 자랍니다.",
-        "카피바라는 채식주의자이며 주로 풀과 수생 식물을 먹습니다.",
-        "카피바라는 위협을 느끼면 물 속으로 뛰어들어 숨을 수 있습니다.",
-        "카피바라는 일본 온천에서 목욕하는 것을 즐기는 것으로 유명합니다.",
-        "카피바라는 하루에 15~20시간을 먹거나 쉬면서 보냅니다.",
-        "카피바라는 등을 토닥여주면 쉽게 잠에 빠져드는 온순한 성격을 가지고 있습니다."
+    let countdown;
+    let timerMode = 'pomodoro'; // 'pomodoro', 'shortBreak', 'longBreak'
+    let timeLeft = 1500; // 25 minutes in seconds
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function startTimer() {
+        clearInterval(countdown);
+        startBtn.textContent = '계속';
+        countdown = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft === 0) {
+                clearInterval(countdown);
+                alert(timerMode === 'pomodoro' ? '집중 시간이 끝났습니다! 휴식을 취하세요.' : '휴식 시간이 끝났습니다! 다시 집중할 시간입니다.');
+                // Basic auto-switching could be added here
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(countdown);
+    }
+
+    function resetTimer() {
+        clearInterval(countdown);
+        timeLeft = 1500; // Reset to 25 minutes
+        timerMode = 'pomodoro';
+        updateTimerDisplay();
+        startBtn.textContent = '시작';
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    // --- To-Do List Logic ---
+    const todoInput = document.getElementById('todo-item-input');
+    const addTodoBtn = document.getElementById('add-todo-btn');
+    const todoList = document.getElementById('todo-list');
+
+    function addTodoItem() {
+        const todoText = todoInput.value.trim();
+        if (todoText === '') return;
+
+        const li = document.createElement('li');
+        li.textContent = todoText;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '삭제';
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.addEventListener('click', () => {
+            li.remove();
+        });
+
+        li.addEventListener('click', () => {
+            li.classList.toggle('completed');
+        });
+
+        li.appendChild(deleteBtn);
+        todoList.appendChild(li);
+        todoInput.value = '';
+    }
+
+    addTodoBtn.addEventListener('click', addTodoItem);
+    todoInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTodoItem();
+    });
+
+    // --- Quote Logic ---
+    const quoteText = document.getElementById('quote-text');
+    const quoteAuthor = document.getElementById('quote-author');
+    const newQuoteBtn = document.getElementById('new-quote-btn');
+
+    const quotes = [
+        { text: "가장 큰 위험은 위험 없는 삶이다.", author: "스티븐 코비" },
+        { text: "배움은 의무도, 생존도 아니다. 그것은 우리의 가장 큰 특권이다.", author: "데이비드 A. 베드나" },
+        { text: "성공의 비결은 시작하는 것이다.", author: "마크 트웨인" },
+        { text: "나는 내가 더 노력할수록 운이 더 좋아진다는 것을 발견했다.", author: "토머스 제퍼슨" },
+        { text: "오늘 할 수 있는 일을 내일로 미루지 말라.", author: "벤자민 프랭클린" }
     ];
 
-    newFactBtn.addEventListener('click', () => {
-        let randomIndex = Math.floor(Math.random() * capybaraFacts.length);
-        let randomFact = capybaraFacts[randomIndex];
-        // Prevent showing the same fact twice in a row
-        if (factText.textContent === randomFact) {
-            randomIndex = (randomIndex + 1) % capybaraFacts.length;
-            randomFact = capybaraFacts[randomIndex];
-        }
-        factText.textContent = randomFact;
-    });
+    function showNewQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        quoteText.textContent = quotes[randomIndex].text;
+        quoteAuthor.textContent = `- ${quotes[randomIndex].author} -`;
+    }
+
+    newQuoteBtn.addEventListener('click', showNewQuote);
+
+    // Initialize
+    updateTimerDisplay();
 });

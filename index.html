@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카피바라 월드</title>
+    <title>스터디 버디 - 당신의 학습 파트너</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,29 +11,46 @@
 </head>
 <body>
     <div class="container">
-        <h1>카피바라 월드</h1>
+        <h1>스터디 버디</h1>
 
         <div class="tabs">
-            <button class="tab-link active" data-tab="facts">카피바라 상식</button>
-            <button class="tab-link" data-tab="game">카피바라 게임</button>
+            <button class="tab-link active" data-tab="pomodoro">뽀모도로</button>
+            <button class="tab-link" data-tab="todo">할 일 목록</button>
+            <button class="tab-link" data-tab="quote">오늘의 명언</button>
         </div>
 
-        <div id="facts" class="tab-content active">
-            <h2>오늘의 카피바라 상식</h2>
-            <div id="fact-container">
-                <p id="fact-text">카피바라는 세계에서 가장 큰 설치류입니다.</p>
+        <!-- 뽀모도로 타이머 섹션 -->
+        <div id="pomodoro" class="tab-content active">
+            <h2>뽀모도로 타이머</h2>
+            <div id="timer-display">25:00</div>
+            <div class="timer-controls">
+                <button id="start-btn">시작</button>
+                <button id="stop-btn">정지</button>
+                <button id="reset-btn">리셋</button>
             </div>
-            <button id="new-fact-btn">새로운 상식 보기</button>
         </div>
 
-        <div id="game" class="tab-content">
-            <h2>카피바라 게임</h2>
-            <canvas id="game-canvas"></canvas>
-            <p class="instructions">스페이스바 또는 화면 터치로 점프하세요!</p>
+        <!-- 할 일 목록 섹션 -->
+        <div id="todo" class="tab-content">
+            <h2>오늘의 할 일</h2>
+            <div class="todo-input">
+                <input type="text" id="todo-item-input" placeholder="새로운 할 일을 추가하세요">
+                <button id="add-todo-btn">추가</button>
+            </div>
+            <ul id="todo-list"></ul>
+        </div>
+
+        <!-- 오늘의 명언 섹션 -->
+        <div id="quote" class="tab-content">
+            <h2>오늘의 명언</h2>
+            <div id="quote-container">
+                <p id="quote-text">가장 큰 위험은 위험 없는 삶이다.</p>
+                <p id="quote-author">- 스티븐 코비 -</p>
+            </div>
+            <button id="new-quote-btn">새로운 명언 보기</button>
         </div>
     </div>
 
     <script src="main.js"></script>
-    <script src="game.js"></script>
 </body>
 </html>
