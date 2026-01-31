@@ -1,44 +1,43 @@
 /* General Styles */
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #fdf6e3; /* Soft, warm background */
-    color: #5d4037; /* Dark brown text for contrast */
+    background-color: #f7f2e9; /* Softer, more natural background */
+    color: #6d5d4b; /* Earthy brown text */
     margin: 0;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .container {
     width: 100%;
     max-width: 800px;
     background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    padding: 30px;
     text-align: center;
 }
 
 h1 {
-    color: #d35400; /* Vibrant orange for the main title */
-    font-size: 2.5em;
-    margin-bottom: 0.2em;
+    color: #e57373; /* Softer, friendly red for the title */
+    font-size: 2.8em;
+    margin-bottom: 0.5em;
 }
 
 p {
     font-size: 1.1em;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 /* Tabs */
 .tabs {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
-    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f1f1f1;
 }
 
 .tab-link {
@@ -48,23 +47,24 @@ p {
     border: none;
     font-size: 1.2em;
     font-weight: 700;
-    color: #7f8c8d;
+    color: #9e9e9e;
     position: relative;
     transition: color 0.3s ease;
 }
 
 .tab-link.active {
-    color: #c0392b; /* Strong red for the active tab */
+    color: #e57373;
 }
 
 .tab-link.active::after {
     content: '';
     position: absolute;
     bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #c0392b;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background-color: #e57373;
+    border-radius: 1.5px;
 }
 
 .tab-content {
@@ -75,17 +75,19 @@ p {
     display: block;
 }
 
-/* Fact Section */
-#fact-container {
-    background-color: #f9f9f9;
-    border-left: 5px solid #d35400;
+/* Fact & Info Sections */
+#fact-container, .info-section {
+    background-color: #fafafa;
+    border-left: 5px solid #ffcc80; /* Light, friendly orange */
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
-    min-height: 80px; /* **Fixed height to prevent layout shift** */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: left;
+}
+
+.info-section h3 {
+    color: #e57373;
+    margin-top: 0;
 }
 
 #fact-text {
@@ -94,10 +96,10 @@ p {
 }
 
 #new-fact-btn {
-    background-color: #e67e22; /* Bright orange button */
+    background-color: #ffb74d; /* Cheerful orange button */
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 12px 30px;
     font-size: 1.1em;
     border-radius: 25px;
     cursor: pointer;
@@ -105,22 +107,63 @@ p {
 }
 
 #new-fact-btn:hover {
-    background-color: #d35400;
-    transform: translateY(-2px);
+    background-color: #ffa726;
+    transform: translateY(-3px);
 }
 
 /* Game Section */
 #game-canvas {
-    background-color: #ecf0f1; /* Light grey canvas background */
-    border-radius: 8px;
+    background-color: #e0f2f1; /* Light teal canvas background */
+    border-radius: 12px;
     margin: 0 auto;
     display: block;
-    width: 100%;      /* **Make canvas responsive** */
-    height: auto;     /* **Maintain aspect ratio** */
+    width: 100%;
+    height: auto;
 }
 
 .instructions {
     margin-top: 15px;
     font-size: 1em;
-    color: #7f8c8d;
+    color: #80cbc4;
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+footer a {
+    color: #9e9e9e;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #e57373;
+}
+
+/* Gallery Styles */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
