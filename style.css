@@ -1,6 +1,5 @@
-/* Fun & Playful Styles for Capybara World */
+/* Cozy & Warm Styles for Capybara World */
 
-/* Animated Gradient Background */
 body {
     font-family: 'Noto Sans KR', sans-serif;
     margin: 0;
@@ -9,99 +8,95 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    background: linear-gradient(135deg, #ffc3a0, #ffafbd, #ffc3a0, #ffafbd);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background-color: #fdf6e3; /* Soft beige background */
     overflow-x: hidden;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 .container {
     width: 100%;
     max-width: 800px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    border-radius: 40px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    background: #fffaf0; /* Floral white */
+    border-radius: 30px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
     padding: 40px;
     text-align: center;
     animation: fadeIn 1s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid #fcefdc;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
     font-family: 'Jua', sans-serif;
-    color: #f857a6;
-    font-size: 4em;
+    color: #d2691e; /* Chocolate color */
+    font-size: 3.8em;
     margin-bottom: 0.5em;
-    text-shadow: 2px 2px 0 rgba(255,255,255,0.7), 4px 4px 0 rgba(0,0,0,0.1);
-    animation: wobble 1.5s ease-in-out infinite;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
-
-@keyframes wobble {
-    0%, 100% { transform: rotate(-1deg); }
-    50% { transform: rotate(1deg); }
-}
-
 
 p {
     font-size: 1.1em;
     line-height: 1.8;
-    color: #574b4f;
+    color: #5d4037; /* Brown text */
 }
 
-/* Funky Tabs */
+/* Warm Tabs */
 .tabs {
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
-    border-bottom: none;
-    gap: 15px;
+    border-bottom: 3px solid #f5deb3; /* Wheat color */
+    gap: 10px;
 }
 
 .tab-link {
-    padding: 12px 28px;
+    padding: 12px 25px;
     cursor: pointer;
-    background: transparent;
-    border: 2px solid #f857a6;
-    border-radius: 30px;
-    font-size: 1.2em;
+    background: none;
+    border: none;
+    font-size: 1.3em;
     font-weight: 700;
-    color: #f857a6;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #a0522d; /* Sienna color */
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 .tab-link:hover {
-    background: #f857a6;
-    color: white;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(248, 87, 166, 0.3);
+    color: #d2691e;
 }
 
 .tab-link.active {
-    background: #f857a6;
-    color: white;
-    box-shadow: 0 5px 10px rgba(248, 87, 166, 0.4);
-    transform: scale(1.1);
+    color: #d2691e;
+}
+
+.tab-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 5px;
+    background-color: #d2691e;
+    border-radius: 2.5px;
+    animation: bounceIn 0.4s ease;
+}
+
+@keyframes bounceIn {
+    0% { transform: translateX(-50%) scale(0.5); }
+    100% { transform: translateX(-50%) scale(1); }
 }
 
 .tab-content {
     display: none;
-    animation: slideInUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: slideInUp 0.5s ease;
 }
 
 @keyframes slideInUp {
-    from { transform: translateY(30px); opacity: 0; }
+    from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
@@ -109,70 +104,59 @@ p {
     display: block;
 }
 
-/* Neumorphic Fact Container */
+/* Fact Container */
 #fact-container {
-    background: rgba(255, 255, 255, 0.7);
-    padding: 30px;
+    background-color: #fff8dc; /* Cornsilk */
+    border-left: 6px solid #e9967a; /* Dark Salmon */
+    padding: 25px;
     margin: 25px auto;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: inset 5px 5px 10px #f0f0f0, inset -5px -5px 10px #ffffff;
+    border-radius: 12px;
+    text-align: left;
 }
 
 #fact-text {
-    font-size: 1.4em;
-    font-style: normal;
-    font-weight: bold;
-    color: #574b4f;
+    font-size: 1.3em;
+    font-style: italic;
+    color: #8b4513; /* SaddleBrown */
 }
 
-/* Pulsing Button */
+/* Earthy Button */
 #new-fact-btn {
-    background: linear-gradient(45deg, #f857a6, #ff5858);
+    background-color: #e9967a; /* Dark Salmon */
     color: white;
     border: none;
-    padding: 18px 40px;
-    font-size: 1.3em;
+    padding: 15px 35px;
+    font-size: 1.2em;
     font-weight: bold;
-    border-radius: 50px;
+    border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(248, 87, 166, 0.5);
-    animation: pulse 2s infinite;
+    box-shadow: 0 4px 15px rgba(233, 150, 122, 0.4);
 }
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
 
 #new-fact-btn:hover {
-    animation-play-state: paused;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(248, 87, 166, 0.7);
+    background-color: #d2691e; /* Chocolate */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(210, 105, 30, 0.5);
 }
 
 /* Game Section */
 #game-canvas {
-    background-color: #e0f7fa;
-    border-radius: 20px;
-    margin: 0 auto;
+    background-color: #f5f5dc; /* Beige */
+    border-radius: 15px;
+    margin: 20px auto 0;
     display: block;
     width: 100%;
     height: auto;
-    border: 5px dashed #b2ebf2;
+    border: 3px solid #e3d1b1;
 }
 
 .instructions {
     margin-top: 15px;
     font-size: 1.1em;
-    font-weight: bold;
-    color: #00bcd4;
+    color: #a0522d; /* Sienna */
 }
 
-/* Removed Footer */
 footer {
     display: none;
 }
