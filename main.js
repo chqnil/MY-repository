@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            // Stop sounds when switching tabs
+            stopAllSounds();
+            document.querySelectorAll('.music-btn').forEach(btn => btn.classList.remove('active'));
+
             tabs.forEach(item => item.classList.remove('active'));
             contents.forEach(item => item.classList.remove('active'));
             tab.classList.add('active');
@@ -19,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-btn');
 
     let countdown;
-    let timerMode = 'pomodoro'; // 'pomodoro', 'shortBreak', 'longBreak'
     let timeLeft = 1500; // 25 minutes in seconds
 
     function updateTimerDisplay() {
@@ -34,10 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
         countdown = setInterval(() => {
             timeLeft--;
             updateTimerDisplay();
-            if (timeLeft === 0) {
+            if (timeLeft < 0) {
                 clearInterval(countdown);
-                alert(timerMode === 'pomodoro' ? '집중 시간이 끝났습니다! 휴식을 취하세요.' : '휴식 시간이 끝났습니다! 다시 집중할 시간입니다.');
-                // Basic auto-switching could be added here
+                alert('집중 시간이 끝났습니다! 5분 휴식을 시작합니다.');
+                timeLeft = 300; // 5 minute break
+                updateTimerDisplay();
+                startTimer(); // Auto-start break
             }
         }, 1000);
     }
@@ -49,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetTimer() {
         clearInterval(countdown);
         timeLeft = 1500; // Reset to 25 minutes
-        timerMode = 'pomodoro';
         updateTimerDisplay();
         startBtn.textContent = '시작';
     }
@@ -73,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = '삭제';
         deleteBtn.classList.add('delete-btn');
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent li click event
             li.remove();
         });
 
@@ -89,6 +94,35 @@ document.addEventListener('DOMContentLoaded', () => {
     addTodoBtn.addEventListener('click', addTodoItem);
     todoInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addTodoItem();
+    });
+    
+    // --- Background Music Logic ---
+    const musicButtons = document.querySelectorAll('.music-btn');
+    const audioCafe = document.getElementById('audio-cafe');
+    const audioRain = document.getElementById('audio-rain');
+
+    function stopAllSounds() {
+        audioCafe.pause();
+        audioRain.pause();
+        audioCafe.currentTime = 0;
+        audioRain.currentTime = 0;
+    }
+
+    musicButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            stopAllSounds();
+            musicButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const sound = button.dataset.sound;
+            if (sound === 'cafe') {
+                audioCafe.play();
+            } else if (sound === 'rain') {
+                audioRain.play();
+            } else if (sound === 'none') {
+                button.classList.remove('active');
+            }
+        });
     });
 
     // --- Quote Logic ---
@@ -106,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showNewQuote() {
         const randomIndex = Math.floor(Math.random() * quotes.length);
-        quoteText.textContent = quotes[randomIndex].text;
+        quoteText.textContent = `\"${quotes[randomIndex].text}\"`;
         quoteAuthor.textContent = `- ${quotes[randomIndex].author} -`;
     }
 
@@ -114,4 +148,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize
     updateTimerDisplay();
+    showNewQuote();
 });
